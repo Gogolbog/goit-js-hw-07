@@ -40,16 +40,27 @@ function onContainerClick (e) {
 console.log(e.target.dataset.source);
 
 
-const instance = basicLightbox.create(`
+const instance = basicLightbox.create(
+  `
     <img src="${e.target.dataset.source}" width="800" height="600">
-`);
+`,
+  {
+    onShow: (instance) => {
+      document.addEventListener("keydown", onEscPress);
+    },
+    onClose: (instance) => {
+      document.removeEventListener("keydown", onEscPress);
+    }
+  }
+);
 
 instance.show();
     
-galleryContainer.addEventListener("keydown", (e) => {
-  if (e.code === "Escape") {
-    instance.close()
+  function onEscPress(e) {
+    if (e.code === "Escape") {
+      instance.close();
+    }
+    
   }
-});
 
 }
